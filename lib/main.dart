@@ -7,6 +7,7 @@ import 'utils.dart';
 
 void main() async {
   await registerServices();
+  await registerController();
   runApp(const MyApp());
 }
 
@@ -28,7 +29,7 @@ class _MyAppState extends State<MyApp> {
         textTheme: GoogleFonts.quicksandTextTheme(),
       ),
       routes: {
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) => HomeScreen(),
       },
       initialRoute: '/home',
     );
