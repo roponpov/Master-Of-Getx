@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
-
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:master_of_getx/models/api_response.dart';
 import 'package:master_of_getx/models/coin_data.dart';
@@ -42,6 +39,18 @@ class AssetsController extends GetxController {
         trackedAssets.map((asset) => jsonEncode(asset)).toList();
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList("tracked_assets", data);
+  }
+
+  void removeTrackedAsset(int index) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("tracked_assets");
+
+    trackedAssets.removeAt(index);
+
+    List<String> data =
+        trackedAssets.map((asset) => jsonEncode(asset)).toList();
+
     await prefs.setStringList("tracked_assets", data);
   }
 

@@ -118,30 +118,96 @@ class HomeScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   TrackedAsset trackedAsset =
                       assetsController.trackedAssets[index];
-                  return ListTile(
-                    leading: Image.network(
-                      getCyptoImageURL(trackedAsset.name!),
-                      errorBuilder: (context, error, stackTrace) =>
-                          Image.asset(IconConstant.notFound),
-                    ),
-                    title: Text(trackedAsset.name!),
-                    subtitle: Text(
-                        "USD: ${assetsController.getAssetPrice(trackedAsset.name!).toStringAsFixed(2)}"),
-                    trailing: Text(trackedAsset.amount.toString()),
-                    onTap: () {
-                      Get.to(() {
-                        return DetailsPage(
-                          coin:
-                              assetsController.getCoinData(trackedAsset.name!)!,
-                        );
-                      });
+                  return Dismissible(
+                    key: UniqueKey(),
+                    background: slideLeftBackground(),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      assetsController.removeTrackedAsset(index);
                     },
+                    child: ListTile(
+                      leading: Image.network(
+                        getCyptoImageURL(trackedAsset.name!),
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(IconConstant.notFound),
+                      ),
+                      title: Text(trackedAsset.name!),
+                      subtitle: Text(
+                          "USD: ${assetsController.getAssetPrice(trackedAsset.name!).toStringAsFixed(2)}"),
+                      trailing: Text(trackedAsset.amount.toString()),
+                      onTap: () {
+                        Get.to(() {
+                          return DetailsPage(
+                            coin: assetsController
+                                .getCoinData(trackedAsset.name!)!,
+                          );
+                        });
+                      },
+                    ),
                   );
                 },
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget slideRightBackground() {
+    return Container(
+      color: Colors.green,
+      child: Align(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              width: 20,
+            ),
+            Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+            Text(
+              " Edit",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.left,
+            ),
+          ],
+        ),
+        alignment: Alignment.centerLeft,
+      ),
+    );
+  }
+
+  Widget slideLeftBackground() {
+    return Container(
+      color: Colors.red,
+      child: Align(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            Text(
+              " Delete",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.right,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+          ],
+        ),
+        alignment: Alignment.centerRight,
       ),
     );
   }
